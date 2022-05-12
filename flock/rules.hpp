@@ -15,14 +15,9 @@ inline Vector2 apply_separation(std::vector<Bird> const& neighbors, Bird& bird,
       [&](Vector2& sum, Bird const& neighbor) {
         bool are_close = (bird.position - neighbor.position).magnitude() <
                          separation_distance;
-        if (are_close) {
-          return sum + (bird.position - neighbor.position);
-        } else {
-          return sum;
-        }
-      });
 
-  position_sum.print();
+        return are_close ? sum + (bird.position - neighbor.position) : sum;
+      });
 
   return position_sum * separation;
 }
@@ -100,6 +95,8 @@ inline void avoid_speeding(Bird& bird, double max_speed, double min_speed) {
   } else if (speed < min_speed) {
     bird.velocity /= speed;
     bird.velocity *= min_speed;
+
+    if (bird.velocity == Vector2{0, 0}) bird.velocity += Vector2{0, 2};
   }
 }
 
