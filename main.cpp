@@ -79,5 +79,3 @@ int main() {
 
   return 0;
 }
-
-void get_user_input(FlockOptions& options) {}
