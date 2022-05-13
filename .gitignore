@@ -1,3 +1,4 @@
 .vscode
 *.out
+*.csv
 .DS_Store

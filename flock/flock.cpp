@@ -2,9 +2,9 @@
 
 #include <cassert>
 #include <cmath>
+#include <fstream>
 #include <iostream>
 #include <random>
-#include <stdexcept>
 
 #include "../vectors/vectors.hpp"
 #include "rules.hpp"
@@ -92,12 +92,10 @@ void Flock::evolve() {
       bird.velocity += avoid_predator(birds_, bird, counter, predator_,
                                       separation_distance_, view_angle_);
 
-    const double max_speed = 5;
-    const double min_speed = 2;
-    avoid_speeding(bird, max_speed, min_speed);
+    avoid_speeding(bird);
     avoid_boundaries(bird, canvas_width_, canvas_height_);
 
-    bird.position += bird.velocity * 0.9;
+    bird.position += bird.velocity;
     ++counter;
   });
 }
@@ -154,6 +152,12 @@ Statistic Flock::calculate_statistics() const {
 
   stdev_x = std::sqrt(stdev_x);
   stdev_y = std::sqrt(stdev_y);
+
+  std::ofstream file;
+  file.open("data.csv", std::ios::app);
+  file << mean_velocity.x() << "," << mean_velocity.y() << "," << stdev_x << ","
+       << stdev_y << "\n";
+  file.close();
 
   return Statistic{mean_velocity, Vector2{stdev_x, stdev_y}};
 }

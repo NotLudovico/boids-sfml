@@ -2,6 +2,7 @@
 #define FLOCK_HPP
 
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <iostream>
 #include <vector>
 
@@ -50,7 +51,6 @@ class Flock {
   unsigned int canvas_width_;
 
  public:
-  Flock();
   Flock(FlockOptions const& flock_options);
   std::vector<Bird> get_neighbors(Bird const& bird) const;
   void evolve();

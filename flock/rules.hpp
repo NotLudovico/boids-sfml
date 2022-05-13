@@ -87,7 +87,8 @@ inline void avoid_boundaries(Bird& bird, int const canvas_width,
   }
 }
 
-inline void avoid_speeding(Bird& bird, double max_speed, double min_speed) {
+inline void avoid_speeding(Bird& bird, double max_speed = 5,
+                           double min_speed = 2) {
   double speed = bird.velocity.magnitude();
   if (speed > max_speed) {
     bird.velocity /= speed;
