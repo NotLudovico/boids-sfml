@@ -52,7 +52,6 @@ class Flock {
 
  public:
   Flock(FlockOptions const& flock_options);
-  std::vector<Bird> get_neighbors(Bird const& bird) const;
   void evolve();
   void evolve_predator();
   void draw(sf::RenderWindow& window) const;

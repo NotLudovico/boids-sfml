@@ -42,27 +42,11 @@ Flock::Flock(FlockOptions const& flock_options)
         Bird{Vector2{pos_x(gen), pos_y(gen)}, Vector2{vel(gen), vel(gen)}};
 }
 
-std::vector<Bird> Flock::get_neighbors(Bird const& bird) const {
-  std::vector<Bird> neighbors;
-
-  std::for_each(birds_.begin(), birds_.end(), [&](Bird const& other) {
-    const double distance_between_birds =
-        (other.position - bird.position).magnitude();
-
-    if (distance_between_birds < distance_ && distance_between_birds > 0) {
-      double angle = get_angle(other.position - bird.position, bird.velocity);
-
-      if (angle < view_angle_) neighbors.push_back(other);
-    }
-  });
-
-  return neighbors;
-}
-
 void Flock::evolve_predator() {
   if (!with_predator_) return;
 
-  std::vector<Bird> const neighbors = this->get_neighbors(predator_);
+  std::vector<Bird> const neighbors =
+      get_neighbors(birds_, predator_, distance_, view_angle_);
 
   if (neighbors.size() != 0) {
     predator_.velocity += apply_cohesion(neighbors, predator_, cohesion_ * 2);
@@ -79,7 +63,8 @@ void Flock::evolve() {
   evolve_predator();
   int counter = 0;
   std::for_each(birds_.begin(), birds_.end(), [&](Bird& bird) {
-    std::vector<Bird> const neighbors = get_neighbors(bird);
+    std::vector<Bird> const neighbors =
+        get_neighbors(birds_, bird, distance_, view_angle_);
 
     if (neighbors.size() != 0) {
       bird.velocity += (apply_separation(neighbors, bird, separation_distance_,
@@ -155,8 +140,8 @@ Statistic Flock::calculate_statistics() const {
 
   std::ofstream file;
   file.open("data.csv", std::ios::app);
-  file << mean_velocity.x() << "," << mean_velocity.y() << "," << stdev_x << ","
-       << stdev_y << "\n";
+  file << mean_velocity.x() << "," << mean_velocity.y() << " , " << stdev_x
+       << " , " << stdev_y << "\n";
   file.close();
 
   return Statistic{mean_velocity, Vector2{stdev_x, stdev_y}};

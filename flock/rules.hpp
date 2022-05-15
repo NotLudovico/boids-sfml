@@ -8,6 +8,25 @@
 #include "../vectors/vectors.hpp"
 #include "flock.hpp"
 
+std::vector<Bird> get_neighbors(std::vector<Bird> const& birds,
+                                Bird const& bird, double distance,
+                                double view_angle) {
+  std::vector<Bird> neighbors;
+
+  std::for_each(birds.begin(), birds.end(), [&](Bird const& other) {
+    const double distance_between_birds =
+        (other.position - bird.position).magnitude();
+
+    if (distance_between_birds < distance && distance_between_birds > 0) {
+      double angle = get_angle(other.position - bird.position, bird.velocity);
+
+      if (angle < view_angle) neighbors.push_back(other);
+    }
+  });
+
+  return neighbors;
+}
+
 inline Vector2 apply_separation(std::vector<Bird> const& neighbors, Bird& bird,
                                 double separation_distance, double separation) {
   Vector2 position_sum = std::accumulate(
