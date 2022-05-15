@@ -19,7 +19,7 @@ struct Bird {
 };
 
 struct FlockOptions {
-  int number = 1;
+  int number = 1000;
   double separation = 0.1;
   double alignment = 0.03;
   double cohesion = 0.005;

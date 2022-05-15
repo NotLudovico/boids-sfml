@@ -75,7 +75,7 @@ inline Vector2 avoid_predator(std::vector<Bird>& birds, Bird& bird, int index,
                               double view_angle) {
   Vector2 position_sum{0, 0};
 
-  if ((bird.position - predator.position).magnitude() < 1000) {
+  if ((bird.position - predator.position).magnitude() < 8) {
     birds.erase(birds.begin() + index);
     return position_sum;
   }
