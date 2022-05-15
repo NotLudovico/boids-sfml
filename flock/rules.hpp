@@ -8,9 +8,9 @@
 #include "../vectors/vectors.hpp"
 #include "flock.hpp"
 
-std::vector<Bird> get_neighbors(std::vector<Bird> const& birds,
-                                Bird const& bird, double distance,
-                                double view_angle) {
+inline std::vector<Bird> get_neighbors(std::vector<Bird> const& birds,
+                                       Bird const& bird, double distance,
+                                       double view_angle) {
   std::vector<Bird> neighbors;
 
   std::for_each(birds.begin(), birds.end(), [&](Bird const& other) {
@@ -75,7 +75,7 @@ inline Vector2 avoid_predator(std::vector<Bird>& birds, Bird& bird, int index,
                               double view_angle) {
   Vector2 position_sum{0, 0};
 
-  if ((bird.position - predator.position).magnitude() < 8) {
+  if ((bird.position - predator.position).magnitude() < 1000) {
     birds.erase(birds.begin() + index);
     return position_sum;
   }
@@ -108,15 +108,16 @@ inline void avoid_boundaries(Bird& bird, int const canvas_width,
 
 inline void avoid_speeding(Bird& bird, double max_speed = 5,
                            double min_speed = 2) {
+  if (bird.velocity == Vector2{0, 0}) bird.velocity += Vector2{0, 2};
+
   double speed = bird.velocity.magnitude();
+
   if (speed > max_speed) {
     bird.velocity /= speed;
     bird.velocity *= max_speed;
   } else if (speed < min_speed) {
     bird.velocity /= speed;
     bird.velocity *= min_speed;
-
-    if (bird.velocity == Vector2{0, 0}) bird.velocity += Vector2{0, 2};
   }
 }
 

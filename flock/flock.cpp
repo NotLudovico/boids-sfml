@@ -115,34 +115,39 @@ void Flock::draw(sf::RenderWindow& window) const {
 unsigned int Flock::size() const { return birds_.size(); }
 
 Statistic Flock::calculate_statistics() const {
-  Vector2 mean_velocity =
-      std::accumulate(birds_.begin(), birds_.end(), Vector2{0, 0},
-                      [&](Vector2 const& sum, Bird const& bird) {
-                        return (sum + bird.velocity);
-                      });
-  mean_velocity /= static_cast<float>(birds_.size());
+  if (birds_.size() != 0) {
+    Vector2 mean_velocity =
+        std::accumulate(birds_.begin(), birds_.end(), Vector2{0, 0},
+                        [&](Vector2 const& sum, Bird const& bird) {
+                          return (sum + bird.velocity);
+                        });
 
-  float stdev_x = 0;
-  float stdev_y = 0;
+    mean_velocity /= static_cast<float>(birds_.size());
 
-  std::for_each(birds_.begin(), birds_.end(), [&](Bird const& bird) {
-    stdev_x += (bird.velocity.x() - mean_velocity.x()) *
-               (bird.velocity.x() - mean_velocity.x());
-    stdev_y += (bird.velocity.y() - mean_velocity.y()) *
-               (bird.velocity.y() - mean_velocity.y());
-  });
+    float stdev_x = 0;
+    float stdev_y = 0;
 
-  stdev_x /= static_cast<float>(birds_.size());
-  stdev_y /= static_cast<float>(birds_.size());
+    std::for_each(birds_.begin(), birds_.end(), [&](Bird const& bird) {
+      stdev_x += (bird.velocity.x() - mean_velocity.x()) *
+                 (bird.velocity.x() - mean_velocity.x());
+      stdev_y += (bird.velocity.y() - mean_velocity.y()) *
+                 (bird.velocity.y() - mean_velocity.y());
+    });
 
-  stdev_x = std::sqrt(stdev_x);
-  stdev_y = std::sqrt(stdev_y);
+    stdev_x /= static_cast<float>(birds_.size());
+    stdev_y /= static_cast<float>(birds_.size());
 
-  std::ofstream file;
-  file.open("data.csv", std::ios::app);
-  file << mean_velocity.x() << "," << mean_velocity.y() << " , " << stdev_x
-       << " , " << stdev_y << "\n";
-  file.close();
+    stdev_x = std::sqrt(stdev_x);
+    stdev_y = std::sqrt(stdev_y);
 
-  return Statistic{mean_velocity, Vector2{stdev_x, stdev_y}};
+    std::ofstream file;
+    file.open("data.csv", std::ios::app);
+    file << mean_velocity.x() << "," << mean_velocity.y() << " , " << stdev_x
+         << " , " << stdev_y << "\n";
+    file.close();
+
+    return Statistic{mean_velocity, Vector2{stdev_x, stdev_y}};
+  } else {
+    return Statistic{{0, 0}, {0, 0}};
+  }
 }
