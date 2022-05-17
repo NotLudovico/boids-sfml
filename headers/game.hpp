@@ -4,16 +4,16 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-#include "../flock/flock.hpp"
+#include "boids.hpp"
 
 class Game {
  private:
   sf::RenderWindow window_;
-  Flock flock_;
+  Boids flock_;
   sf::Sprite background_;
 
  public:
-  Game(std::string const& title, FlockOptions const& flock_options,
+  Game(std::string const& title, BoidsOptions const& flock_options,
        sf::Texture const& texture);
   void listen_for_event();
   void run();

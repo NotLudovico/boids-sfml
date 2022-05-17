@@ -3,14 +3,14 @@
 #include <stdexcept>
 #include <string>
 
-#include "./flock/flock.hpp"
-#include "./game/game.hpp"
-#include "./ui/text.hpp"
+#include "./headers/boids.hpp"
+#include "./headers/game.hpp"
+#include "./headers/text.hpp"
 
-void get_user_input(FlockOptions&);
+void get_user_input(BoidsOptions&);
 
 int main() {
-  FlockOptions options;
+  BoidsOptions options;
   options.canvas_height = sf::VideoMode::getDesktopMode().height * 0.9;
   options.canvas_width = sf::VideoMode::getDesktopMode().width * 0.9;
 

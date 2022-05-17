@@ -1,24 +1,15 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "flock.hpp"
-
-#include "../doctest.h"
-#include "rules.hpp"
+#include "../headers/boids.hpp"
+#include "../headers/rules.hpp"
+#include "doctest.h"
 
 TEST_CASE("Testing rules") {
-  Vector2 position_1{10, 14};
-  Vector2 position_2{23, 20};
-  Vector2 position_3{0, 0};
-  Vector2 position_4{300, 300};
-  Vector2 velocity_1{0, 0};
-  Vector2 velocity_2{5, -4};
-  Vector2 velocity_3{-3, -2};
-  Vector2 velocity_4{2, 2};
-  Bird b1{position_1, velocity_1};
-  Bird b2{position_2, velocity_2};
-  Bird b3{position_3, velocity_3};
-  Bird b4{position_4, velocity_4};
+  Boid b1{{10, 14}, {0, 0}};
+  Boid b2{{23, 20}, {5, -4}};
+  Boid b3{{0, 0}, {-3, -2}};
+  Boid b4{{300, 300}, {2, 2}};
   SUBCASE("Testing separation") {
-    std::vector<Bird> flock_;
+    std::vector<Boid> flock_;
     flock_.push_back(b1);
     flock_.push_back(b2);
     flock_.push_back(b3);
@@ -28,7 +19,7 @@ TEST_CASE("Testing rules") {
   }
 
   SUBCASE("Testing alignement") {
-    std::vector<Bird> flock_;
+    std::vector<Boid> flock_;
     flock_.push_back(b1);
     flock_.push_back(b2);
     flock_.push_back(b3);
@@ -37,7 +28,7 @@ TEST_CASE("Testing rules") {
     CHECK(v2 == v_a2);
   }
   SUBCASE("Testing cohesion") {
-    std::vector<Bird> flock_;
+    std::vector<Boid> flock_;
     flock_.push_back(b1);
     flock_.push_back(b2);
     flock_.push_back(b3);

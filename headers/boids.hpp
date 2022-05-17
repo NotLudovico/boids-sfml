@@ -6,9 +6,9 @@
 #include <iostream>
 #include <vector>
 
-#include "../vectors/vectors.hpp"
+#include "vectors.hpp"
 
-struct Bird {
+struct Boid {
   Vector2 position{0, 0};
   Vector2 velocity{0, 0};
 
@@ -18,10 +18,10 @@ struct Bird {
   double vy() const { return velocity.y(); }
 };
 
-struct FlockOptions {
+struct BoidsOptions {
   int number = 1000;
   double separation = 0.1;
-  double alignment = 0.03;
+  double alignment = 0.04;
   double cohesion = 0.005;
   double distance = 150;
   double separation_distance = 30;
@@ -36,22 +36,22 @@ struct Statistic {
   Vector2 stdev_velocity;
 };
 
-class Flock {
+class Boids {
  private:
   double separation_;
   double alignment_;
   double cohesion_;
   double distance_;
   double separation_distance_;
-  std::vector<Bird> birds_;
-  Bird predator_;
+  std::vector<Boid> birds_;
+  Boid predator_;
   bool with_predator_;
   double view_angle_;
   unsigned int canvas_height_;
   unsigned int canvas_width_;
 
  public:
-  Flock(FlockOptions const& flock_options);
+  Boids(BoidsOptions const& flock_options);
   void evolve();
   void evolve_predator();
   void draw(sf::RenderWindow& window) const;

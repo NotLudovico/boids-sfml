@@ -5,15 +5,15 @@
 #include <iostream>
 #include <numeric>
 
-#include "../vectors/vectors.hpp"
-#include "flock.hpp"
+#include "boids.hpp"
+#include "vectors.hpp"
 
-inline std::vector<Bird> get_neighbors(std::vector<Bird> const& birds,
-                                       Bird const& bird, double distance,
+inline std::vector<Boid> get_neighbors(std::vector<Boid> const& birds,
+                                       Boid const& bird, double distance,
                                        double view_angle) {
-  std::vector<Bird> neighbors;
+  std::vector<Boid> neighbors;
 
-  std::for_each(birds.begin(), birds.end(), [&](Bird const& other) {
+  std::for_each(birds.begin(), birds.end(), [&](Boid const& other) {
     const double distance_between_birds =
         (other.position - bird.position).magnitude();
 
@@ -27,11 +27,11 @@ inline std::vector<Bird> get_neighbors(std::vector<Bird> const& birds,
   return neighbors;
 }
 
-inline Vector2 apply_separation(std::vector<Bird> const& neighbors, Bird& bird,
+inline Vector2 apply_separation(std::vector<Boid> const& neighbors, Boid& bird,
                                 double separation_distance, double separation) {
   Vector2 position_sum = std::accumulate(
       neighbors.begin(), neighbors.end(), Vector2{0, 0},
-      [&](Vector2& sum, Bird const& neighbor) {
+      [&](Vector2& sum, Boid const& neighbor) {
         bool are_close = (bird.position - neighbor.position).magnitude() <
                          separation_distance;
 
@@ -41,11 +41,11 @@ inline Vector2 apply_separation(std::vector<Bird> const& neighbors, Bird& bird,
   return position_sum * separation;
 }
 
-inline Vector2 apply_alignment(std::vector<Bird> const& neighbors, Bird& bird,
+inline Vector2 apply_alignment(std::vector<Boid> const& neighbors, Boid& bird,
                                double alignment) {
   Vector2 velocity_sum =
       std::accumulate(neighbors.begin(), neighbors.end(), Vector2{0, 0},
-                      [&](Vector2 const& velocity_sum, Bird const& neighbor) {
+                      [&](Vector2 const& velocity_sum, Boid const& neighbor) {
                         return (velocity_sum + neighbor.velocity);
                       });
 
@@ -56,11 +56,11 @@ inline Vector2 apply_alignment(std::vector<Bird> const& neighbors, Bird& bird,
   return (velocity_sum - bird.velocity) * alignment;
 }
 
-inline Vector2 apply_cohesion(std::vector<Bird> const& neighbors, Bird& bird,
+inline Vector2 apply_cohesion(std::vector<Boid> const& neighbors, Boid& bird,
                               double cohesion) {
   Vector2 center_of_mass =
       std::accumulate(neighbors.begin(), neighbors.end(), Vector2{0, 0},
-                      [&](Vector2 const& sum, Bird const& neighbor) {
+                      [&](Vector2 const& sum, Boid const& neighbor) {
                         return sum + neighbor.position;
                       });
 
@@ -70,8 +70,8 @@ inline Vector2 apply_cohesion(std::vector<Bird> const& neighbors, Bird& bird,
   return (center_of_mass - bird.position) * cohesion;
 }
 
-inline Vector2 avoid_predator(std::vector<Bird>& birds, Bird& bird, int index,
-                              Bird const& predator, double separation_distance,
+inline Vector2 avoid_predator(std::vector<Boid>& birds, Boid& bird, int index,
+                              Boid const& predator, double separation_distance,
                               double view_angle) {
   Vector2 position_sum{0, 0};
 
@@ -91,7 +91,7 @@ inline Vector2 avoid_predator(std::vector<Bird>& birds, Bird& bird, int index,
   return position_sum;
 }
 
-inline void avoid_boundaries(Bird& bird, int const canvas_width,
+inline void avoid_boundaries(Boid& bird, int const canvas_width,
                              int const canvas_height) {
   if (bird.x() < 0) {
     bird.position.set_x(canvas_width);
@@ -106,7 +106,7 @@ inline void avoid_boundaries(Bird& bird, int const canvas_width,
   }
 }
 
-inline void avoid_speeding(Bird& bird, double max_speed = 5,
+inline void avoid_speeding(Boid& bird, double max_speed = 5,
                            double min_speed = 2) {
   if (bird.velocity == Vector2{0, 0}) bird.velocity += Vector2{0, 2};
 

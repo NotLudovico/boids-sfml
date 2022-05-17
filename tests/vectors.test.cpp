@@ -1,10 +1,10 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "vectors.hpp"
+#include "../headers/vectors.hpp"
 
-#include "../doctest.h"
+#include "doctest.h"
 
 TEST_CASE("Testing 2D Vector") {
-  SUBCASE("testing print") {
+  SUBCASE("testing getters") {
     Vector2 v1{1., 2.};
     Vector2 v2{2., 3.};
     Vector2 v3{4., 3.};

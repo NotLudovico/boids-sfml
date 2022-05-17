@@ -1,19 +1,19 @@
-#include "./game.hpp"
+#include "./headers/game.hpp"
 
 #include <iostream>
 
-#include "../flock/flock.hpp"
-#include "../ui/text.hpp"
+#include "./headers/boids.hpp"
+#include "./headers/text.hpp"
 
-Game::Game(std::string const& title, FlockOptions const& flock_options,
+Game::Game(std::string const& title, BoidsOptions const& flock_options,
            sf::Texture const& texture)
     : window_{sf::VideoMode(flock_options.canvas_width,
                             flock_options.canvas_height),
               title},
       flock_{flock_options},
       background_{texture} {
-  window_.setVerticalSyncEnabled(true);
   window_.setFramerateLimit(30);
+  window_.setVerticalSyncEnabled(true);
 
   sf::Vector2u texture_size = texture.getSize();
   sf::Vector2u window_size = window_.getSize();
