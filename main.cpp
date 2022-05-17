@@ -24,7 +24,7 @@ int main() {
       std::cout << "Insert Number of Boids: ";
       std::cin >> options.number;
 
-      if (options.number < 0)
+      if (options.number <= 0)
         throw std::runtime_error{"Number of boids is invalid"};
 
       std::cout << "Insert Separation Parameter: ";
@@ -67,7 +67,7 @@ int main() {
       std::cin >> choice;
 
       std::cout << "Select Space Type: \n (0) - Cilindrical \n (1) - Toroidal "
-                   "\n (2) - Rectanguale\n";
+                   "\n (2) - Rectangular\n";
       int space_type;
       std::cin >> space_type;
 

@@ -8,6 +8,32 @@ TEST_CASE("Testing rules") {
   Boid b2{{23, 20}, {5, -4}};
   Boid b3{{0, 0}, {-3, -2}};
   Boid b4{{300, 300}, {2, 2}};
+
+  SUBCASE("Testing get_neighbors") {
+    std::vector<Boid> flock_;
+    flock_.push_back(b1);
+    flock_.push_back(b2);
+    flock_.push_back(b3);
+    flock_.push_back(b4);
+    auto v = get_neighbors(flock_, b1, 150, 2.8);
+    std::vector<Boid> flock_2;
+    flock_2.push_back(b1);
+    flock_2.push_back(b4);
+    auto v2 = get_neighbors(flock_2, b4, 150, 2.8);
+    std::vector<Boid> flock_3;
+    flock_3.push_back(b1);
+    auto v3 = get_neighbors(flock_3, b1, 150, 2.8);
+    std::vector<Boid> flock_4;
+    flock_.push_back(b1);
+    flock_.push_back(b2);
+    flock_.push_back(b4);
+    auto v4 = get_neighbors(flock_4, b1, 150, 0.5);
+    CHECK(v.size() == 2);
+    CHECK(v2.size() == 0);
+    CHECK(v3.size() == 0);
+    CHECK(v4.size() == 0);
+  }
+
   SUBCASE("Testing separation") {
     std::vector<Boid> flock_;
     flock_.push_back(b1);
