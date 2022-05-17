@@ -14,7 +14,6 @@ int main() {
   options.canvas_height = sf::VideoMode::getDesktopMode().height * 0.9;
   options.canvas_width = sf::VideoMode::getDesktopMode().width * 0.9;
 
-  // get_user_input(flock_options);
   std::cout << "Use default config? (Y/N)\n";
   char choice;
   std::cin >> choice;
@@ -59,9 +58,29 @@ int main() {
       std::cout << "Insert View Angle (0-3.14): ";
       std::cin >> options.view_angle;
 
+      if (options.view_angle < 0)
+        throw std::runtime_error{"Invalid angle value"};
+
       std::cout << "Simulate with predator? (Y/N): ";
       char choice;
       std::cin >> choice;
+
+      std::cout << "Select Space Type: \n (0) - Cilindrical \n (1) - Toroidal "
+                   "\n (2) - Rectanguale\n";
+      int space_type;
+      std::cin >> space_type;
+
+      if (space_type < 0 || space_type > 2)
+        throw std::runtime_error{"Invalid space type"};
+
+      switch (space_type) {
+        case 1:
+          options.space = toroidal;
+          break;
+        case 2:
+          options.space = rectangular;
+          break;
+      }
 
       if (std::tolower(choice) == 'y') options.with_predator = true;
     }
@@ -69,6 +88,8 @@ int main() {
     std::cerr << e.what() << '\n';
     return EXIT_FAILURE;
   }
+
+  remove("data.csv");
 
   sf::Texture background;
   if (!background.loadFromFile("./ui/sky.jpg"))

@@ -18,17 +18,20 @@ struct Boid {
   double vy() const { return velocity.y(); }
 };
 
+enum SpaceType { cilindrical, toroidal, rectangular };
+
 struct BoidsOptions {
   int number = 1000;
-  double separation = 0.1;
-  double alignment = 0.04;
-  double cohesion = 0.005;
+  double separation = 0.25;
+  double alignment = 0.5;
+  double cohesion = 0.008;
   double distance = 150;
-  double separation_distance = 30;
+  double separation_distance = 35;
   double view_angle = 2.8;  // ~ 320
   bool with_predator = true;
   unsigned int canvas_height = 1000;
   unsigned int canvas_width = 1000;
+  SpaceType space = rectangular;
 };
 
 struct Statistic {
@@ -49,6 +52,7 @@ class Boids {
   double view_angle_;
   unsigned int canvas_height_;
   unsigned int canvas_width_;
+  SpaceType space_;
 
  public:
   Boids(BoidsOptions const& flock_options);

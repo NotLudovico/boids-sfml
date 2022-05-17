@@ -1,10 +1,11 @@
+#include "./headers/boids.hpp"
+
 #include <cassert>
 #include <cmath>
 #include <fstream>
 #include <iostream>
 #include <random>
 
-#include "./headers/boids.hpp"
 #include "./headers/rules.hpp"
 #include "./headers/vectors.hpp"
 
@@ -17,9 +18,11 @@ Boids::Boids(BoidsOptions const& flock_options)
       with_predator_{flock_options.with_predator},
       view_angle_{flock_options.view_angle},
       canvas_height_{flock_options.canvas_height},
-      canvas_width_{flock_options.canvas_width} {
+      canvas_width_{flock_options.canvas_width},
+      space_{flock_options.space} {
   auto [number, separation, alignment, cohesion, distance, separation_distance,
-        with_predator, view_angle, canvas_height, canvas_width] = flock_options;
+        with_predator, view_angle, canvas_height, canvas_width, space] =
+      flock_options;
 
   assert(number > 0 && separation >= 0 && alignment >= 0 && cohesion >= 0 &&
          distance >= 0 && separation_distance >= 0);
@@ -53,7 +56,7 @@ void Boids::evolve_predator() {
   }
 
   avoid_speeding(predator_, 15, 2);
-  avoid_boundaries(predator_, canvas_width_, canvas_height_);
+  avoid_boundaries(predator_, canvas_width_, canvas_height_, space_);
 
   predator_.position += predator_.velocity;
 }
@@ -72,12 +75,12 @@ void Boids::evolve() {
       bird.velocity += (apply_cohesion(neighbors, bird, cohesion_));
     }
 
-    if (with_predator_)
+    if (with_predator_) {
       bird.velocity += avoid_predator(birds_, bird, counter, predator_,
                                       separation_distance_, view_angle_);
-
+    }
     avoid_speeding(bird);
-    avoid_boundaries(bird, canvas_width_, canvas_height_);
+    avoid_boundaries(bird, canvas_width_, canvas_height_, space_);
 
     bird.position += bird.velocity;
     ++counter;
@@ -97,7 +100,7 @@ void Boids::draw(sf::RenderWindow& window) const {
     if (bird.vx() < 0 && bird.vy() > 0) angle = -90 - angle;
     if (bird.vx() > 0 && bird.vy() < 0) angle = 180 - angle;
 
-    tri.setRotation(angle);
+    tri.setRotation(angle / 4);
     tri.setPosition(sf::Vector2f(birds_[i].x(), birds_[i].y()));
     window.draw(tri);
   }

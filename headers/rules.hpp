@@ -92,17 +92,43 @@ inline Vector2 avoid_predator(std::vector<Boid>& birds, Boid& bird, int index,
 }
 
 inline void avoid_boundaries(Boid& bird, int const canvas_width,
-                             int const canvas_height) {
-  if (bird.x() < 0) {
-    bird.position.set_x(canvas_width);
-  } else if (bird.x() > canvas_width) {
-    bird.position.set_x(0);
-  }
+                             int const canvas_height, SpaceType space) {
+  if (space == cilindrical) {
+    if (bird.x() < 0) {
+      bird.position.set_x(canvas_width);
+    } else if (bird.x() > canvas_width) {
+      bird.position.set_x(0);
+    }
 
-  if (bird.y() < 100) {
-    bird.velocity += Vector2{0, 0.5};
-  } else if (bird.y() > (canvas_height - 200)) {
-    bird.velocity += Vector2{0, -0.5};
+    if (bird.y() < 100) {
+      bird.velocity += Vector2{0, 0.5};
+    } else if (bird.y() > (canvas_height - 200)) {
+      bird.velocity += Vector2{0, -0.5};
+    }
+  } else if (space == toroidal) {
+    if (bird.x() < 0) {
+      bird.position.set_x(canvas_width);
+    } else if (bird.x() > canvas_width) {
+      bird.position.set_x(0);
+    }
+
+    if (bird.y() < 0) {
+      bird.position.set_y(canvas_height);
+    } else if (bird.y() > canvas_height) {
+      bird.position.set_y(0);
+    }
+  } else {
+    if (bird.x() < 100) {
+      bird.velocity += Vector2{0.5, 0};
+    } else if (bird.x() > (canvas_width - 200)) {
+      bird.velocity += Vector2{-0.5, 0};
+    }
+
+    if (bird.y() < 100) {
+      bird.velocity += Vector2{0, 0.5};
+    } else if (bird.y() > (canvas_height - 200)) {
+      bird.velocity += Vector2{0, -0.5};
+    }
   }
 }
 
