@@ -7,8 +7,6 @@
 #include "./headers/game.hpp"
 #include "./headers/text.hpp"
 
-void get_user_input(BoidsOptions&);
-
 int main() {
   BoidsOptions options;
   options.canvas_height = sf::VideoMode::getDesktopMode().height * 0.9;
