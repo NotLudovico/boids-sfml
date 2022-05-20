@@ -5,12 +5,12 @@
 #include "./headers/boids.hpp"
 #include "./headers/text.hpp"
 
-Game::Game(std::string const& title, BoidsOptions const& flock_options,
+Game::Game(std::string const& title, BoidsOptions const& boids_options,
            sf::Texture const& texture)
-    : window_{sf::VideoMode(flock_options.canvas_width,
-                            flock_options.canvas_height),
+    : window_{sf::VideoMode(boids_options.canvas_width,
+                            boids_options.canvas_height),
               title},
-      flock_{flock_options},
+      boids_{boids_options},
       background_{texture} {
   window_.setFramerateLimit(30);
   window_.setVerticalSyncEnabled(true);
@@ -37,36 +37,46 @@ void Game::listen_for_event() {
 
 void Game::run() {
   sf::Font font;
-  if (!font.loadFromFile("./ui/catamaran.ttf"))
-    std::cerr << "Couldn't load font";
 
-  Text m_velocity{"", 32, sf::Color::Black, sf::Vector2f{10.f, 10.f}, font};
-  Text s_velocity{"", 32, sf::Color::Black, sf::Vector2f{10.f, 120.f}, font};
+  bool has_loaded_font = true;
+  if (!font.loadFromFile("./ui/catamaran.ttf")) {
+    std::cerr << "Couldn't load font";
+    has_loaded_font = false;
+  }
+
+  Text mean_velocity_text{"", 32, sf::Color::Black, sf::Vector2f{10.f, 10.f},
+                          font};
+  Text standard_deviation_text{"", 32, sf::Color::Black,
+                               sf::Vector2f{10.f, 120.f}, font};
   Text alive_counter{"", 32, sf::Color::Black, sf::Vector2f{10.f, 220.f}, font};
 
   while (window_.isOpen()) {
     this->listen_for_event();
 
     window_.clear(sf::Color::White);
-    Statistic m_vel = flock_.calculate_statistics();
+    Statistic stats = boids_.calculate_statistics();
 
-    m_velocity.update_text(
-        "MEAN VELOCITY X: " + std::to_string(m_vel.mean_velocity.x()) +
-        "\nMEAN VELOCITY Y: " + std::to_string(m_vel.mean_velocity.y()));
+    if (has_loaded_font) {
+      mean_velocity_text.update_text(
+          "MEAN VELOCITY X: " + std::to_string(stats.mean_velocity.x()) +
+          "\nMEAN VELOCITY Y: " + std::to_string(stats.mean_velocity.y()));
 
-    s_velocity.update_text("STANDARD DEVIATION VELOCITY X: " +
-                           std::to_string(m_vel.stdev_velocity.x()) +
-                           "\nSTANDARD DEVIATION VELOCITY Y: " +
-                           std::to_string(m_vel.stdev_velocity.y()));
+      standard_deviation_text.update_text(
+          "STANDARD DEVIATION VELOCITY X: " +
+          std::to_string(stats.stdev_velocity.x()) +
+          "\nSTANDARD DEVIATION VELOCITY Y: " +
+          std::to_string(stats.stdev_velocity.y()));
 
-    alive_counter.update_text("BOIDS ALIVE: " + std::to_string(flock_.size()));
+      alive_counter.update_text("BOIDS ALIVE: " +
+                                std::to_string(boids_.size()));
+      mean_velocity_text.draw(window_);
+      standard_deviation_text.draw(window_);
+      alive_counter.draw(window_);
+    }
 
     window_.draw(background_);
-    flock_.evolve();
-    flock_.draw(window_);
-    m_velocity.draw(window_);
-    s_velocity.draw(window_);
-    alive_counter.draw(window_);
+    boids_.evolve();
+    boids_.draw(window_);
 
     window_.display();
   }

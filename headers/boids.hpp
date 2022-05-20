@@ -46,7 +46,7 @@ class Boids {
   double cohesion_;
   double distance_;
   double separation_distance_;
-  std::vector<Boid> birds_;
+  std::vector<Boid> boids_;
   Boid predator_;
   bool with_predator_;
   double view_angle_;
@@ -55,7 +55,7 @@ class Boids {
   SpaceType space_;
 
  public:
-  Boids(BoidsOptions const& flock_options);
+  Boids(BoidsOptions const& boids_options);
   void evolve();
   void evolve_predator();
   void draw(sf::RenderWindow& window) const;

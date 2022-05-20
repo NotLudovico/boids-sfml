@@ -9,11 +9,11 @@
 class Game {
  private:
   sf::RenderWindow window_;
-  Boids flock_;
+  Boids boids_;
   sf::Sprite background_;
 
  public:
-  Game(std::string const& title, BoidsOptions const& flock_options,
+  Game(std::string const& title, BoidsOptions const& boids_options,
        sf::Texture const& texture);
   void listen_for_event();
   void run();

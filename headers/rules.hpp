@@ -29,6 +29,8 @@ inline std::vector<Boid> get_neighbors(std::vector<Boid> const& birds,
 
 inline Vector2 apply_separation(std::vector<Boid> const& neighbors, Boid& bird,
                                 double separation_distance, double separation) {
+  if (neighbors.size() == 0) return Vector2{0, 0};
+
   Vector2 position_sum = std::accumulate(
       neighbors.begin(), neighbors.end(), Vector2{0, 0},
       [&](Vector2& sum, Boid const& neighbor) {
@@ -43,13 +45,13 @@ inline Vector2 apply_separation(std::vector<Boid> const& neighbors, Boid& bird,
 
 inline Vector2 apply_alignment(std::vector<Boid> const& neighbors, Boid& bird,
                                double alignment) {
+  if (neighbors.size() == 0) return Vector2{0, 0};
+
   Vector2 velocity_sum =
       std::accumulate(neighbors.begin(), neighbors.end(), Vector2{0, 0},
                       [&](Vector2 const& velocity_sum, Boid const& neighbor) {
                         return (velocity_sum + neighbor.velocity);
                       });
-
-  assert(neighbors.size() > 0);
 
   velocity_sum /= static_cast<double>(neighbors.size());
 
@@ -58,13 +60,14 @@ inline Vector2 apply_alignment(std::vector<Boid> const& neighbors, Boid& bird,
 
 inline Vector2 apply_cohesion(std::vector<Boid> const& neighbors, Boid& bird,
                               double cohesion) {
+  if (neighbors.size() == 0) return Vector2{0, 0};
+
   Vector2 center_of_mass =
       std::accumulate(neighbors.begin(), neighbors.end(), Vector2{0, 0},
                       [&](Vector2 const& sum, Boid const& neighbor) {
                         return sum + neighbor.position;
                       });
 
-  assert(neighbors.size() > 0);
   center_of_mass /= static_cast<double>(neighbors.size());
 
   return (center_of_mass - bird.position) * cohesion;
