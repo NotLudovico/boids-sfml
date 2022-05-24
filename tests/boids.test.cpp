@@ -1,5 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "../headers/boids.hpp"
+
 #include "../headers/rules.hpp"
 #include "doctest.h"
 
@@ -61,5 +62,12 @@ TEST_CASE("Testing rules") {
     Vector2 v2 = apply_cohesion(flock_, b1, 0.005);
     Vector2 v_c2{0.005, -2.66666};
     CHECK(v2.x() == doctest::Approx(v_c2.x()));
+  }
+
+  SUBCASE("Avoid speeding") {
+    avoid_speeding(b5, 5, 2);
+    avoid_speeding(b6, 5, 2);
+    CHECK(b5.velocity.magnitude() == 2);
+    CHECK(b6.velocity.magnitude() == 5);
   }
 }

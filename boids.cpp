@@ -94,7 +94,7 @@ void Boids::draw(sf::RenderWindow& window) const {
 
   for (size_t i = 0; i != boids_.size(); i++) {
     Boid const& bird = boids_[i];
-    double angle = get_angle(bird.velocity, Vector2{0, 1}) * 180 / (3.1415 * 5);
+    double angle = get_angle(bird.velocity, Vector2{0, 1}) * 180 / 3.1415;
 
     if (bird.vx() < 0 && bird.vy() < 0) angle -= 180;
     if (bird.vx() < 0 && bird.vy() > 0) angle = -90 - angle;

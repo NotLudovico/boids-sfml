@@ -55,6 +55,9 @@ void Game::run() {
 
     window_.clear(sf::Color::White);
     Statistic stats = boids_.calculate_statistics();
+    window_.draw(background_);
+    boids_.evolve();
+    boids_.draw(window_);
 
     if (has_loaded_font) {
       mean_velocity_text.update_text(
@@ -73,10 +76,6 @@ void Game::run() {
       standard_deviation_text.draw(window_);
       alive_counter.draw(window_);
     }
-
-    window_.draw(background_);
-    boids_.evolve();
-    boids_.draw(window_);
 
     window_.display();
   }
