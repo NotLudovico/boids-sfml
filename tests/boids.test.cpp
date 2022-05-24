@@ -9,6 +9,14 @@ TEST_CASE("Testing rules") {
   Boid b2{{23, 20}, {5, -4}};
   Boid b3{{0, 0}, {-3, -2}};
   Boid b4{{300, 300}, {2, 2}};
+  Boid b5{{300, 300}, {0, 0}};
+  Boid b6{{300, 300}, {100, 100}};
+  Boid b7{{300, 950}, {0, 3}};
+  Boid b8{{300, 50}, {0, -3}};
+  Boid b9{{-20, 500}, {0, 0}};
+  Boid b10{{1080, 500}, {5, 0}};
+  Boid b11{{500, -20}, {5, 0}};
+  Boid b12{{500, 1020}, {5, 0}};
 
   SUBCASE("Testing get_neighbors") {
     std::vector<Boid> flock_;
@@ -45,7 +53,7 @@ TEST_CASE("Testing rules") {
     CHECK(v2 == v_s2);
   }
 
-  SUBCASE("Testing alignement") {
+  SUBCASE("Testing alignment") {
     std::vector<Boid> flock_;
     flock_.push_back(b1);
     flock_.push_back(b2);
@@ -63,11 +71,52 @@ TEST_CASE("Testing rules") {
     Vector2 v_c2{0.005, -2.66666};
     CHECK(v2.x() == doctest::Approx(v_c2.x()));
   }
-
   SUBCASE("Avoid speeding") {
     avoid_speeding(b5, 5, 2);
     avoid_speeding(b6, 5, 2);
     CHECK(b5.velocity.magnitude() == 2);
     CHECK(b6.velocity.magnitude() == 5);
+  }
+  SUBCASE("Avoid boundaries cilindrical") {
+    for (size_t i = 0; i != 6; i++) {
+      avoid_boundaries(b7, 1000, 1000, cilindrical);
+    }
+    CHECK(b7.vy() == 0);
+    for (size_t i = 0; i != 6; i++) {
+      avoid_boundaries(b8, 1000, 1000, cilindrical);
+    }
+    CHECK(b8.vy() == 0);
+    avoid_boundaries(b9, 1000, 1000, cilindrical);
+    CHECK(b9.x() == 1000);
+    avoid_boundaries(b10, 1000, 1000, cilindrical);
+    CHECK(b10.x() == 0);
+  }
+  SUBCASE("Avoid boundaries rectangular") {
+    for (size_t i = 0; i != 6; i++) {
+      avoid_boundaries(b7, 1000, 1000, rectangular);
+    }
+    CHECK(b7.vy() == 0);
+    for (size_t i = 0; i != 6; i++) {
+      avoid_boundaries(b8, 1000, 1000, rectangular);
+    }
+    CHECK(b8.vy() == 0);
+    for (size_t i = 0; i != 6; i++) {
+      avoid_boundaries(b9, 1000, 1000, rectangular);
+    }
+    CHECK(b9.vx() == 3);
+    for (size_t i = 0; i != 6; i++) {
+      avoid_boundaries(b10, 1000, 1000, rectangular);
+    }
+    CHECK(b10.vx() == 2);
+  }
+  SUBCASE("Avoid boundaries toroidal") {
+    avoid_boundaries(b9, 1000, 1000, toroidal);
+    CHECK(b9.x() == 1000);
+    avoid_boundaries(b10, 1000, 1000, toroidal);
+    CHECK(b10.x() == 0);
+    avoid_boundaries(b11, 1000, 1000, toroidal);
+    CHECK(b11.y() == 1000);
+    avoid_boundaries(b12, 1000, 1000, toroidal);
+    CHECK(b12.y() == 0);
   }
 }
