@@ -31,7 +31,7 @@ struct BoidsOptions {
   bool with_predator = true;
   unsigned int canvas_height = 1000;
   unsigned int canvas_width = 1000;
-  SpaceType space = toroidal;
+  SpaceType space = cylindrical;
 };
 
 struct Statistic {

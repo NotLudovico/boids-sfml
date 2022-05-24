@@ -88,8 +88,12 @@ void Boids::evolve() {
     ++counter;
   });
 
+  int killed_counter = 0;
   std::for_each(dead_boid_indexes.begin(), dead_boid_indexes.end(),
-                [&](int index) { boids_.erase(boids_.begin() + index); });
+                [&](int index) {
+                  boids_.erase(boids_.begin() + index - killed_counter);
+                  killed_counter++;
+                });
 }
 
 void Boids::draw(sf::RenderWindow& window) const {

@@ -13,7 +13,6 @@ Game::Game(std::string const& title, BoidsOptions const& boids_options,
       boids_{boids_options},
       background_{texture} {
   window_.setFramerateLimit(30);
-  window_.setVerticalSyncEnabled(true);
 
   sf::Vector2u texture_size = texture.getSize();
   sf::Vector2u window_size = window_.getSize();
