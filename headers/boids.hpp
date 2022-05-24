@@ -22,9 +22,9 @@ enum SpaceType { cilindrical, toroidal, rectangular };
 
 struct BoidsOptions {
   int number = 1000;
-  double separation = 0.25;
-  double alignment = 0.5;
-  double cohesion = 0.008;
+  double separation = 0.05;
+  double alignment = 0.02;
+  double cohesion = 0.005;
   double distance = 150;
   double separation_distance = 35;
   double view_angle = 2.8;  // ~ 320

@@ -18,6 +18,7 @@ int main() {
 
   try {
     if (!std::cin.good()) throw std::runtime_error{"Invalid choice"};
+
     if (std::tolower(choice) != 'y') {
       std::cout << "Insert Number of Boids: ";
       std::cin >> options.number;
