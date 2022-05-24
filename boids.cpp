@@ -64,6 +64,7 @@ void Boids::evolve_predator() {
 void Boids::evolve() {
   evolve_predator();
   int counter = 0;
+  std::vector<int> dead_boid_indexes;
   std::for_each(boids_.begin(), boids_.end(), [&](Boid& bird) {
     std::vector<Boid> const neighbors =
         get_neighbors(boids_, bird, distance_, view_angle_);
@@ -76,8 +77,9 @@ void Boids::evolve() {
     }
 
     if (with_predator_) {
-      bird.velocity += avoid_predator(boids_, bird, counter, predator_,
-                                      separation_distance_, view_angle_);
+      bird.velocity +=
+          avoid_predator(bird, counter, dead_boid_indexes, predator_,
+                         separation_distance_, view_angle_);
     }
     avoid_speeding(bird);
     avoid_boundaries(bird, canvas_width_, canvas_height_, space_);
@@ -85,6 +87,9 @@ void Boids::evolve() {
     bird.position += bird.velocity;
     ++counter;
   });
+
+  std::for_each(dead_boid_indexes.begin(), dead_boid_indexes.end(),
+                [&](int index) { boids_.erase(boids_.begin() + index); });
 }
 
 void Boids::draw(sf::RenderWindow& window) const {

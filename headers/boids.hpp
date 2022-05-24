@@ -28,7 +28,7 @@ struct BoidsOptions {
   double distance = 150;
   double separation_distance = 35;
   double view_angle = 2.8;  // ~ 320
-  bool with_predator = false;
+  bool with_predator = true;
   unsigned int canvas_height = 1000;
   unsigned int canvas_width = 1000;
   SpaceType space = toroidal;
