@@ -18,7 +18,7 @@ struct Boid {
   double vy() const { return velocity.y(); }
 };
 
-enum SpaceType { cilindrical, toroidal, rectangular };
+enum SpaceType { cylindrical, toroidal, rectangular };
 
 struct BoidsOptions {
   int number = 1000;

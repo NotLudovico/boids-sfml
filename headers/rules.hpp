@@ -97,7 +97,7 @@ inline Vector2 avoid_predator(Boid& boid, int index,
 
 inline void avoid_boundaries(Boid& boid, int const canvas_width,
                              int const canvas_height, SpaceType space) {
-  if (space == cilindrical) {
+  if (space == cylindrical) {
     if (boid.x() < 0) {
       boid.position.set_x(canvas_width);
     } else if (boid.x() > canvas_width) {

@@ -77,16 +77,16 @@ TEST_CASE("Testing rules") {
     Boid b9{{-20, 500}, {0, 0}};
     Boid b10{{1080, 500}, {5, 0}};
     for (size_t i = 0; i != 6; i++) {
-      avoid_boundaries(b7, 1000, 1000, cilindrical);
+      avoid_boundaries(b7, 1000, 1000, cylindrical);
     }
     CHECK(b7.vy() == 0);
     for (size_t i = 0; i != 6; i++) {
-      avoid_boundaries(b8, 1000, 1000, cilindrical);
+      avoid_boundaries(b8, 1000, 1000, cylindrical);
     }
     CHECK(b8.vy() == 0);
-    avoid_boundaries(b9, 1000, 1000, cilindrical);
+    avoid_boundaries(b9, 1000, 1000, cylindrical);
     CHECK(b9.x() == 1000);
-    avoid_boundaries(b10, 1000, 1000, cilindrical);
+    avoid_boundaries(b10, 1000, 1000, cylindrical);
     CHECK(b10.x() == 0);
   }
   SUBCASE("Avoid boundaries rectangular") {

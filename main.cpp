@@ -12,7 +12,17 @@ int main() {
   options.canvas_height = sf::VideoMode::getDesktopMode().height * 0.9;
   options.canvas_width = sf::VideoMode::getDesktopMode().width * 0.9;
 
-  std::cout << "Use default config? (Y/N)\n";
+  std::cout << "\nDefault config is: \n"
+            << " - Number of boids: " << options.number
+            << "\n - Separation: " << options.separation
+            << "\n - Alignment: " << options.alignment
+            << "\n - Cohesion: " << options.cohesion
+            << "\n - Distance: " << options.distance
+            << "\n - Separation Distance: " << options.separation_distance
+            << "\n - View Angle: " << options.view_angle
+            << "\n - Space Type: Cylindrical"
+            << "\n - Simulating with predator\n";
+  std::cout << "\nUse default config? (Y/N)\n";
   char choice;
   std::cin >> choice;
 
@@ -65,7 +75,7 @@ int main() {
       char choice;
       std::cin >> choice;
 
-      std::cout << "Select Space Type: \n (0) - Cilindrical \n (1) - Toroidal "
+      std::cout << "Select Space Type: \n (0) - Cylindrical \n (1) - Toroidal "
                    "\n (2) - Rectangular\n";
       int space_type;
       std::cin >> space_type;
