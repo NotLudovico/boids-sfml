@@ -100,15 +100,21 @@ void Boids::draw(sf::RenderWindow& window) const {
     if (bird.vx() < 0 && bird.vy() > 0) angle = -90 - angle;
     if (bird.vx() > 0 && bird.vy() < 0) angle = 180 - angle;
 
-    tri.setRotation(angle / 4);
+    tri.setRotation(angle);
     tri.setPosition(sf::Vector2f(boids_[i].x(), boids_[i].y()));
     window.draw(tri);
   }
 
   if (with_predator_) {
     sf::CircleShape bird(8, 3);
+    double angle =
+        get_angle(predator_.velocity, Vector2{0, 1}) * 180 / (3.1415);
+    if (predator_.vx() < 0 && predator_.vy() < 0) angle -= 180;
+    if (predator_.vx() < 0 && predator_.vy() > 0) angle = -90 - angle;
+    if (predator_.vx() > 0 && predator_.vy() < 0) angle = 180 - angle;
     bird.setFillColor(sf::Color::Red);
     bird.setOrigin(sf::Vector2f{4, 4});
+    bird.setRotation(angle);
     bird.setPosition(sf::Vector2f(predator_.x(), predator_.y()));
     window.draw(bird);
   }

@@ -105,7 +105,7 @@ inline void avoid_boundaries(Boid& bird, int const canvas_width,
 
     if (bird.y() < 100) {
       bird.velocity += Vector2{0, 0.5};
-    } else if (bird.y() > (canvas_height - 200)) {
+    } else if (bird.y() > (canvas_height - 100)) {
       bird.velocity += Vector2{0, -0.5};
     }
   } else if (space == toroidal) {
@@ -138,7 +138,6 @@ inline void avoid_boundaries(Boid& bird, int const canvas_width,
 inline void avoid_speeding(Boid& bird, double max_speed = 5,
                            double min_speed = 2) {
   if (bird.velocity == Vector2{0, 0}) bird.velocity += Vector2{0, 2};
-
   double speed = bird.velocity.magnitude();
 
   if (speed > max_speed) {
