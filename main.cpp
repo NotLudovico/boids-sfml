@@ -75,6 +75,8 @@ int main() {
       char choice;
       std::cin >> choice;
 
+      if (std::tolower(choice) == 'n') options.with_predator = false;
+
       std::cout << "Select Space Type: \n (0) - Cylindrical \n (1) - Toroidal "
                    "\n (2) - Rectangular\n";
       int space_type;
@@ -91,8 +93,6 @@ int main() {
           options.space = rectangular;
           break;
       }
-
-      if (std::tolower(choice) == 'y') options.with_predator = true;
     }
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';

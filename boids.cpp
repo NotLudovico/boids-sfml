@@ -63,6 +63,7 @@ void Boids::evolve_predator() {
 
 void Boids::evolve() {
   evolve_predator();
+
   int counter = 0;
   std::vector<int> dead_boid_indexes;
   std::for_each(boids_.begin(), boids_.end(), [&](Boid& bird) {
