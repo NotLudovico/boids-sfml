@@ -160,8 +160,8 @@ Statistic Boids::calculate_statistics() const {
 
     std::ofstream file;
     file.open("data.csv", std::ios::app);
-    file << mean_velocity.x() << "," << mean_velocity.y() << " , " << stdev_x
-         << " , " << stdev_y << "\n";
+    file << mean_velocity.x() << "," << mean_velocity.y() << "," << stdev_x
+         << "," << stdev_y << "\n";
     file.close();
 
     return Statistic{mean_velocity, Vector2{stdev_x, stdev_y}};
